@@ -1,0 +1,129 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>AIChatUI</title>  
+    <!-- Include Bootstrap CSS -->  
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">  
+    <style>  
+        body { margin: 0; padding: 0; }  
+        #chat-container { max-width: 600px; margin: 30px auto; }  
+        #message-list { height: 35em; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }  
+        .message { padding: 5px; border-bottom: 1px solid #eee; }  
+        .message:last-child { border-bottom: none; }
+
+        .message-role { font-weight: bold; margin-right: 0.5em; }
+        .message-rol::after { content: ":"; font-weight: bold; }
+    </style>  
+</head>  
+<body>  
+    <div id="chat-container">
+        <div id="message-list"></div>  
+        <form id="message-form" class="form-inline mt-3">  
+            <input type="text" id="message-input" class="form-control mr-sm-2" placeholder="Type a message..." autocomplete="off" style="flex-grow: 1;">  
+            <button type="submit" class="btn btn-primary">Send</button>
+            <button id="btnClearHistory" type="button" class="btn btn-secondary">Clear Chat History</button>
+        </form>  
+    </div>  
+  
+    <!-- Include Bootstrap and jQuery -->  
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>  
+    <script>  
+        $(document).ready(function() {  
+            const messageList = $('#message-list');  
+            const messageForm = $('#message-form');  
+            const messageInput = $('#message-input');  
+  
+            messageForm.submit(function(e) {  
+                e.preventDefault();  
+                const message = messageInput.val().trim();  
+                if (message) {  
+                    addMessage('You', message);  
+                    messageInput.val('');  
+                    sendMessageToApi(message);  
+                }  
+            });
+
+            $('#btnClearHistory').click(() => {
+                fetch('/v2/clear').then((res) => {
+                    if (res.ok){
+                        $('#message-list').html('');
+                        return;
+                    }
+                    throw new Error(`${response.status}: ${response.statusText}`);
+                }).catch(err => {
+                    console.error(err);
+                    addMessage('Error', 'Error occurred while clearing history.');
+                })
+                
+            });
+  
+            function addMessage(sender, message) {  
+                const messageElement = $('<div class="message"></div>');
+                const formattedMessage = formatMessageForDisplay(message);
+                messageElement.html(`<span class="message-role">${sender}</span><span class="message-content">${formattedMessage}</span>`);  
+                messageList.append(messageElement);  
+                messageList.scrollTop(messageList[0].scrollHeight);  
+            }
+
+            function formatMessageForDisplay(message) {
+                return message.replaceAll('\n', '<br/>');
+            }
+  
+            function sendMessageToApi(message) {
+                fetch('/v2/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prompt: message })
+                }).then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    throw new Error(`${response.status}: ${response.statusText}`);
+                }).then(res => {
+                    addMessage('AI', res.choices[0].message.content); 
+                }).catch(err => {
+                    console.error(err);
+                    addMessage('Error', 'Error occurred while sending message.');
+                });
+            }  
+
+
+
+            // load chat history
+            fetch('/v2/history', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                throw new Error(`${response.status}: ${response.statusText}`);
+            }).then(data => {
+                if (data) {
+                    data.forEach(item => {
+                        var role = item.role;
+                        if (role !== 'system') {
+                            if (role == 'user') role = 'You';
+                            if (role == 'assistant') role = 'AI';
+                            addMessage(
+                                role,
+                                item.content
+                            );
+                        }
+                    });
+                }
+            }).catch(err => {
+                console.error(err);
+                addMessage('Error', 'Error loading chat history!');
+            })
+        });  
+    </script>  
+</body>  
+</html>  
