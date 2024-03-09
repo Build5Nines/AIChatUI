@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors')
+//const cors = require('cors')
 const swagger = require('./swagger') 
 
 // load environment variables from .env file
@@ -8,7 +8,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(express.static('static'))
-app.use(cors()); // enable all CORS requests
+//app.use(cors()); // enable all CORS requests
 
 
 /**
