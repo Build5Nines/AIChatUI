@@ -1,0 +1,3 @@
+az group create --name "b59-eus2-aichatui-rg" --location "eastus2" --tags "project=https://github.com/build5nines/AIChatUI"
+
+az deployment group create --resource-group "b59-eus2-aichatui-rg" --template-file "deploy.bicep"
