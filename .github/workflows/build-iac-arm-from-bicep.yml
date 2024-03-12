@@ -7,9 +7,6 @@ on:
       - 'IaC/Bicep/**'
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
   terraform-v1:
     name: 'Validate Bicep - v1'
