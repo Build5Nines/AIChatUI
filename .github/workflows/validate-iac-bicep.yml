@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Iac/Bicep/**'
+      - 'IaC/Bicep/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'Iac/Bicep/**'
+      - 'IaC/Bicep/**'
   workflow_dispatch:
 
 permissions:
