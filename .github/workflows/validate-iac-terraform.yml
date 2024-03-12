@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - Iac/Terraform/**
+      - 'Iac/Terraform/**'
   pull_request:
     branches: [ main ]
     paths:
-      - Iac/Terraform/**
+      - 'Iac/Terraform/**'
   workflow_dispatch:
 
 permissions:

@@ -26,3 +26,4 @@ resource azureopenai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' =
     publicNetworkAccess: 'Enabled'
   }
 }
+

@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - Iac/Bicep/**
+      - 'Iac/Bicep/**'
   pull_request:
     branches: [ main ]
     paths:
-      - Iac/Bicep/**
+      - 'Iac/Bicep/**'
   workflow_dispatch:
 
 permissions:
@@ -30,7 +30,12 @@ jobs:
     - name: Setup Bicep
       uses: anthony-c-martin/setup-bicep@v0.1
 
-    - name: Validate
+    - name: Bicep Lint
+      run: |
+        bicep lint deploy.bicep
+      working-directory: IaC/Bicep/v1
+
+    - name: Bicep Build
       run: |
         bicep build deploy.bicep
       working-directory: IaC/Bicep/v1
@@ -50,7 +55,12 @@ jobs:
     - name: Setup Bicep
       uses: anthony-c-martin/setup-bicep@v0.1
 
-    - name: Validate
+    - name: Bicep Lint
+      run: |
+        bicep lint deploy.bicep
+      working-directory: IaC/Bicep/v2
+
+    - name: Bicep Build
       run: |
         bicep build deploy.bicep
       working-directory: IaC/Bicep/v2
