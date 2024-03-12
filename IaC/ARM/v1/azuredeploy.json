@@ -5,11 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.25.53.49325",
-      "templateHash": "8631109726296233189"
+      "templateHash": "3034798151611343286"
     }
   },
   "parameters": {
-    "resource_prefix": {
+    "resourcePrefix": {
       "type": "string",
       "defaultValue": "b59-eus2-aichatui"
     },
@@ -17,7 +17,7 @@
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
     },
-    "azure_openai_aku": {
+    "azureOpenAISku": {
       "type": "string",
       "defaultValue": "S0"
     }
@@ -31,12 +31,12 @@
     {
       "type": "Microsoft.CognitiveServices/accounts",
       "apiVersion": "2023-10-01-preview",
-      "name": "[format('{0}-oai', parameters('resource_prefix'))]",
+      "name": "[format('{0}-oai', parameters('resourcePrefix'))]",
       "location": "[parameters('location')]",
       "tags": "[variables('resourceTags')]",
       "kind": "OpenAI",
       "sku": {
-        "name": "[parameters('azure_openai_aku')]"
+        "name": "[parameters('azureOpenAISku')]"
       },
       "properties": {
         "networkAcls": {
