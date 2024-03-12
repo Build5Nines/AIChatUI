@@ -43,8 +43,6 @@ jobs:
         cp -rf IaC/Bicep/v1/deploy.json IaC/ARM/v1/azuredeploy.json
         rm IaC/Bicep/v1/deploy.json
 
-        cat IaC/ARM/v1/azuredeploy.json
-
     - name: Ensure ARM v2 Folder Exists
       run: |
         if [ ! -d "IaC/ARM" ]; then
@@ -65,14 +63,6 @@ jobs:
         cp -rf IaC/Bicep/v2/deploy.json IaC/ARM/v2/azuredeploy.json
         rm IaC/Bicep/v2/deploy.json
 
-        cat IaC/ARM/v2/azuredeploy.json
-
-    # - name: Commit to Repo
-    #   uses: JamesIves/github-pages-deploy-action@releases/v3
-    #   with:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     BRANCH: main # The branch the action should deploy to.
-    #     FOLDER: ${{ github.workspace }} # The folder the action should deploy.
     - name: Commit to Repo
       run: |
         git config --global user.email "${{ github.actor }}"
@@ -81,5 +71,5 @@ jobs:
         git add IaC/ARM/v1/azuredeploy.json
         git add IaC/ARM/v2/azuredeploy.json
         git commit -m 'rebuilding ARM templates from Bicep'
-        
+
         git push
