@@ -1,28 +1,28 @@
 
-param resource_prefix string = 'b59-eus2-aichatui'
+param resourcePrefix string = 'b59-eus2-aichatui'
 
 param location string = resourceGroup().location
 
-param azure_openai_aku string = 'S0'
+param azureOpenAISku string = 'S0'
 
-param azure_search_sku string = 'standard'
+param azureSearchSku string = 'standard'
 
-param azure_storage_sku string = 'Standard_LRS'
+param azureStorageSku string = 'Standard_LRS'
 
 
 var resourceTags = {
   project: 'https://github.com/build5nines/AIChatUI'
 }
 
-var resource_prefix_for_storage = replace(resource_prefix, '-', '')
+var resourcePrefix_for_storage = replace(resourcePrefix, '-', '')
 
 resource azureopenai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
-  name: '${resource_prefix}-oai'
+  name: '${resourcePrefix}-oai'
   location: location
   tags: resourceTags
   kind: 'OpenAI'
   sku: {
-    name: azure_openai_aku
+    name: azureOpenAISku
   }
   properties: {
     networkAcls: {
@@ -35,11 +35,11 @@ resource azureopenai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' =
 }
 
 resource azuresearch 'Microsoft.Search/searchServices@2023-11-01' = {
-  name: '${resource_prefix}-search'
+  name: '${resourcePrefix}-search'
   location: location
   tags: resourceTags
   sku: {
-    name: azure_search_sku
+    name: azureSearchSku
   }
   properties: {
     replicaCount: 1
@@ -61,11 +61,11 @@ resource azuresearch 'Microsoft.Search/searchServices@2023-11-01' = {
 }
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: '${resource_prefix_for_storage}sa'
+  name: '${resourcePrefix_for_storage}sa'
   location: location
   tags: resourceTags
   sku: {
-    name: azure_storage_sku
+    name: azureStorageSku
   }
   kind: 'StorageV2'
   properties: {
