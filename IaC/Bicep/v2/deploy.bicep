@@ -9,6 +9,7 @@ param azure_search_sku string = 'standard'
 
 param azure_storage_sku string = 'Standard_LRS'
 
+
 var resourceTags = {
   project: 'https://github.com/build5nines/AIChatUI'
 }
