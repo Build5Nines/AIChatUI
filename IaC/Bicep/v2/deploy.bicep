@@ -15,7 +15,7 @@ var resourceTags = {
 }
 
 var resource_prefix_for_storage = replace(resource_prefix, '-', '')
-d
+
 resource azureopenai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
   name: '${resource_prefix}-oai'
   location: location
