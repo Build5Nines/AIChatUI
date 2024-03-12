@@ -39,7 +39,7 @@ jobs:
 
     - name: Move ARM v1
       run: |
-        cp IaC/Bicep/v1/deploy.json IaC/ARM/v1/azuredeploy.json
+        cp -rf IaC/Bicep/v1/deploy.json IaC/ARM/v1/azuredeploy.json
         rm IaC/Bicep/v1/deploy.json
 
     - name: Ensure ARM v2 Folder Exists
@@ -58,7 +58,7 @@ jobs:
 
     - name: Move ARM v2
       run: |
-        cp IaC/Bicep/v2/deploy.json IaC/ARM/v2/azuredeploy.json
+        cp -rf IaC/Bicep/v2/deploy.json IaC/ARM/v2/azuredeploy.json
         rm IaC/Bicep/v2/deploy.json
 
     - name: Commit to Repo
