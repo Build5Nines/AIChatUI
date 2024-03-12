@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.25.53.49325",
+      "templateHash": "8631109726296233189"
+    }
+  },
+  "parameters": {
+    "resource_prefix": {
+      "type": "string",
+      "defaultValue": "b59-eus2-aichatui"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "azure_openai_aku": {
+      "type": "string",
+      "defaultValue": "S0"
+    }
+  },
+  "variables": {
+    "resourceTags": {
+      "project": "https://github.com/build5nines/AIChatUI"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "apiVersion": "2023-10-01-preview",
+      "name": "[format('{0}-oai', parameters('resource_prefix'))]",
+      "location": "[parameters('location')]",
+      "tags": "[variables('resourceTags')]",
+      "kind": "OpenAI",
+      "sku": {
+        "name": "[parameters('azure_openai_aku')]"
+      },
+      "properties": {
+        "networkAcls": {
+          "defaultAction": "Allow",
+          "virtualNetworkRules": [],
+          "ipRules": []
+        },
+        "publicNetworkAccess": "Enabled"
+      }
+    }
+  ]
+}
