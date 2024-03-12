@@ -23,13 +23,20 @@ The app integrates Swagger to provide a documentation UI that can be used to see
 
 This application uses the `.env` file to configure the necessary environment variables. A list of what environment variables are necessary is included within the `.env.EXAMPLE` file.
 
-## Infrastructure
+## Required Azure Infrastructure
 
 This application assumes you have an instance of Azure OpenAI Service and Azure Search Service deployed to Microsoft Azure already.
 
-The project includes the following Azure Bicep templates that can be used to deploy the Azure resources necessary depending on which API version of this app you want to use:
+The project includes the following Infrastructure as Code (IaC) templates that can be used to deploy the Azure resources necessary depending on which API version of this app you want to use:
 
-- [`/IaC/Bicep/v1`](IaC/Bicep/v1) - Deploys Azure OpenAI Service
-- [`/IaC/Bicep/v2`](IaC/Bicep/v2) - Deploys Azure OpenAI Service, Azure Search Service, and Azure Storage Account
+- HashiCorp Terraform
+  - [`/IaC/Terraform/v1`](IaC/Terraform/v1) - Deploys Azure OpenAI Service
+  - [`/IaC/Terraform/v2`](IaC/Terraform/v2) - Deploys Azure OpenAI Service, Azure Search Service, and Azure Storage Account
+- Azure Bicep
+  - [`/IaC/Bicep/v1`](IaC/Bicep/v1) - Deploys Azure OpenAI Service
+  - [`/IaC/Bicep/v2`](IaC/Bicep/v2) - Deploys Azure OpenAI Service, Azure Search Service, and Azure Storage Account
+- Azure ARM Template
+  - [`/IaC/ARM/v1`](IaC/ARM/v1) - Deploys Azure OpenAI Service
+  - [`/IaC/ARM/v2`](IaC/ARM/v2) - Deploys Azure OpenAI Service, Azure Search Service, and Azure Storage Account
 
 This project is written by [Chris Pietschmann](https://www.linkedin.com/in/crpietschmann/) _(Microsoft MVP)_.
