@@ -43,6 +43,8 @@ jobs:
         cp -rf IaC/Bicep/v1/deploy.json IaC/ARM/v1/azuredeploy.json
         rm IaC/Bicep/v1/deploy.json
 
+        cat IaC/ARM/v1/azuredeploy.json
+
     - name: Ensure ARM v2 Folder Exists
       run: |
         if [ ! -d "IaC/ARM" ]; then
@@ -62,6 +64,8 @@ jobs:
         rm IaC/ARM/v2/azuredeploy.json
         cp -rf IaC/Bicep/v2/deploy.json IaC/ARM/v2/azuredeploy.json
         rm IaC/Bicep/v2/deploy.json
+
+        cat IaC/ARM/v2/azuredeploy.json
 
     - name: Commit to Repo
       uses: JamesIves/github-pages-deploy-action@releases/v3
