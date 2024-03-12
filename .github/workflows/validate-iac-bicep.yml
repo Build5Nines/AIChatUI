@@ -3,12 +3,12 @@ name: Validate IaC - Azure Bicep
 on:
   push:
     branches: [ main ]
-#    paths:
-#      - 'Iac/Bicep/**'
+    paths:
+      - 'Iac/Bicep/**'
   pull_request:
     branches: [ main ]
-#    paths:
-#      - 'Iac/Bicep/**'
+    paths:
+      - 'Iac/Bicep/**'
   workflow_dispatch:
 
 permissions:

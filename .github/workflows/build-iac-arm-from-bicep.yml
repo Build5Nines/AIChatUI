@@ -3,6 +3,8 @@ name: Build IaC - Azure ARM Template from Bicep
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'IaC/Bicep/**'
   workflow_dispatch:
 
 permissions:
@@ -45,6 +47,13 @@ jobs:
 
         cat IaC/ARM/v1/azuredeploy.json
 
+    - name: Commit to Repo
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: main # The branch the action should deploy to.
+        FOLDER: ${{ github.workspace }} # The folder the action should deploy.
+
   terraform-v2:
     name: 'Validate Bicep - v2'
     runs-on: ubuntu-latest
@@ -81,12 +90,9 @@ jobs:
 
         cat IaC/ARM/v2/azuredeploy.json
 
-        echo "${{ github.workspace }}"
-        ls ${{ github.workspace }}
-
-    # - name: Commit to Repo
-    #   uses: JamesIves/github-pages-deploy-action@releases/v3
-    #   with:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     BRANCH: main # The branch the action should deploy to.
-    #     FOLDER: ${{ github.workspace }} # The folder the action should deploy.
+    - name: Commit to Repo
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: main # The branch the action should deploy to.
+        FOLDER: ${{ github.workspace }} # The folder the action should deploy.
