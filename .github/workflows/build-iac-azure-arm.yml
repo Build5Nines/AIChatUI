@@ -1,4 +1,4 @@
-name: Build IaC - Azure ARM Template from Bicep
+name: Build IaC - Azure ARM
 
 on:
   push:
