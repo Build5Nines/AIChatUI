@@ -82,6 +82,7 @@ jobs:
         cat IaC/ARM/v2/azuredeploy.json
 
         echo "${{ github.workspace }}"
+        ls ${{ github.workspace }}
 
     # - name: Commit to Repo
     #   uses: JamesIves/github-pages-deploy-action@releases/v3
