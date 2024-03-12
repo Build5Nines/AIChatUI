@@ -1,0 +1,53 @@
+name: Validate IaC - Azure Bicep
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-v1:
+    name: 'Validate Bicep - v1'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Bicep
+      uses: anthony-c-martin/setup-bicep@v0.1
+
+    - name: Validate
+      run: |
+        bicep build
+      working-directory: IaC/Bicep/v1
+
+  terraform-v2:
+    name: 'Validate Bicep - v2'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Bicep
+      uses: anthony-c-martin/setup-bicep@v0.1
+
+    - name: Validate
+      run: |
+        bicep build
+      working-directory: IaC/Bicep/v2
+
