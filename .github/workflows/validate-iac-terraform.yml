@@ -3,12 +3,12 @@ name: Validate IaC - Terraform
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'Iac/Terraform/**'
+#    paths:
+#      - 'Iac/Terraform/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'Iac/Terraform/**'
+#    paths:
+#      - 'Iac/Terraform/**'
   workflow_dispatch:
 
 permissions:
