@@ -49,8 +49,8 @@ jobs:
         if [ ! -d "IaC/ARM" ]; then
             mkdir "IaC/ARM"
         fi
-        if [ ! -d "IaC/ARM/v1" ]; then
-            mkdir "IaC/ARM/v1"
+        if [ ! -d "IaC/ARM/v2" ]; then
+            mkdir "IaC/ARM/v2"
         fi
 
     - name: Build ARM v2
