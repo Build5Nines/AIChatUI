@@ -30,7 +30,7 @@ jobs:
       run: |
         terraform init
         terraform validate
-      working-directory: ${{ github.workspaces }}/IaC/Terraform/v1
+      working-directory: IaC/Terraform/v1
 
   terraform-v2:
     name: 'Validate Terraform - v2'
@@ -51,5 +51,5 @@ jobs:
       run: |
         terraform init
         terraform validate
-      working-directory: ${{ github.workspaces }}/IaC/Terraform/v2
+      working-directory: IaC/Terraform/v2
 
