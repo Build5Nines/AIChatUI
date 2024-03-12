@@ -75,7 +75,11 @@ jobs:
     #     FOLDER: ${{ github.workspace }} # The folder the action should deploy.
     - name: Commit to Repo
       run: |
+        git config --global user.email "${{ github.actor }}"
+        git config --global user.name "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
         git add IaC/ARM/v1/azuredeploy.json
         git add IaC/ARM/v2/azuredeploy.json
         git commit -m 'rebuilding ARM templates from Bicep'
+        
         git push
