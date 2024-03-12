@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  terraform-v1:
-    name: 'Validate Bicep - v1'
+  build-arm-templates:
+    name: 'Build ARM Templates'
     runs-on: ubuntu-latest
 
     defaults:
@@ -23,12 +23,7 @@ jobs:
     - name: Setup Bicep
       uses: anthony-c-martin/setup-bicep@v0.1
 
-    - name: Bicep Build
-      run: |
-        bicep build deploy.bicep
-      working-directory: IaC/Bicep/v1
-
-    - name: Ensure v1 Folder Exists
+    - name: Ensure ARM v1 Folder Exists
       run: |
         if [ ! -d "IaC/ARM" ]; then
             mkdir "IaC/ARM"
@@ -37,50 +32,33 @@ jobs:
             mkdir "IaC/ARM/v1"
         fi
 
-    - name: Move ARM Template
+    - name: Build ARM v1
+      run: |
+        bicep build deploy.bicep
+      working-directory: IaC/Bicep/v1
+
+    - name: Move ARM v1
       run: |
         cp IaC/Bicep/v1/deploy.json IaC/ARM/v1/azuredeploy.json
         rm IaC/Bicep/v1/deploy.json
 
         cat IaC/ARM/v1/azuredeploy.json
 
-    - name: Commit to Repo
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: main # The branch the action should deploy to.
-        FOLDER: ${{ github.workspace }} # The folder the action should deploy.
-
-  terraform-v2:
-    name: 'Validate Bicep - v2'
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup Bicep
-      uses: anthony-c-martin/setup-bicep@v0.1
-
-    - name: Bicep Build
-      run: |
-        bicep build deploy.bicep
-      working-directory: IaC/Bicep/v2
-
-    - name: Ensure v2 Folder Exists
+    - name: Ensure ARM v2 Folder Exists
       run: |
         if [ ! -d "IaC/ARM" ]; then
             mkdir "IaC/ARM"
         fi
-        if [ ! -d "IaC/ARM/v2" ]; then
-            mkdir "IaC/ARM/v2"
+        if [ ! -d "IaC/ARM/v1" ]; then
+            mkdir "IaC/ARM/v1"
         fi
 
-    - name: Move ARM Template
+    - name: Build ARM v2
+      run: |
+        bicep build deploy.bicep
+      working-directory: IaC/Bicep/v2
+
+    - name: Move ARM v2
       run: |
         cp IaC/Bicep/v2/deploy.json IaC/ARM/v2/azuredeploy.json
         rm IaC/Bicep/v2/deploy.json

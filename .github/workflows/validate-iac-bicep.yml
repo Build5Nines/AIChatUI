@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  terraform-v1:
+  bicep-v1:
     name: 'Validate Bicep - v1'
     runs-on: ubuntu-latest
 
@@ -40,7 +40,7 @@ jobs:
         bicep build deploy.bicep
       working-directory: IaC/Bicep/v1
 
-  terraform-v2:
+  bicep-v2:
     name: 'Validate Bicep - v2'
     runs-on: ubuntu-latest
 
