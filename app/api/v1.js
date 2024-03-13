@@ -6,9 +6,21 @@ const azure_openai_deployment = process.env["AZURE_OPENAI_API_DEPLOYMENT_NAME"]
 
 // Store conversation history in memory for demonstration purposes.  
 // In a production environment, consider storing this data in a persistent store.  
-let conversationHistory = [
-    { role: "system", content: "" }
-];
+let conversationHistory = [];
+let rawConversationHistory = []
+
+function clearConversationHistory() {
+    conversationHistory = [
+        { role: "system", content: "" }
+    ];
+    rawConversationHistory = [];
+}
+clearConversationHistory()
+
+function appendConversationHistory(role, content, raw) {
+    conversationHistory.push({ role: role, content: content });
+    rawConversationHistory.push({ role: role, content: content, raw: raw });
+}
 
 module.exports = (app) => {
     /**
@@ -44,7 +56,7 @@ module.exports = (app) => {
         }  
     
         // Add the user's prompt to the conversation history  
-        conversationHistory.push({ role: "user", content: prompt });  
+        appendConversationHistory("user", prompt);
     
         try {  
             // https://learn.microsoft.com/javascript/api/%40azure/openai/openaiclient?view=azure-node-preview
@@ -61,7 +73,7 @@ module.exports = (app) => {
     
             // Add the system's response to the conversation history  
             const systemResponse = chatResponse.choices[0].message.content;  
-            conversationHistory.push({ role: "assistant", content: systemResponse, raw: chatResponse });  
+            appendConversationHistory("assistant", systemResponse, chatResponse); 
     
             //return res.json({ response: systemResponse });
             return res.json(chatResponse);
@@ -88,7 +100,7 @@ module.exports = (app) => {
      *                 type: object
      */
     app.get(`/v1/history`, async (req, res) => {
-        return res.json(conversationHistory);
+        return res.json(rawConversationHistory);
     });
 
     /**
