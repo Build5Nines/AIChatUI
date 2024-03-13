@@ -1,0 +1,33 @@
+name: Test App - Node.js
+
+on:
+  push:
+    paths:
+      - 'app/**'
+  pull_request:
+    paths:
+      - 'app/**'
+  workflow_dispatch:
+
+jobs:
+  test-app:
+    name: 'Test Node.js App'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'app'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+
+    - name: NPM Install
+      run: npm install
+
+    - name: NPM Test
+      run: npm test
