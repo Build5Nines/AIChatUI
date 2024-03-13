@@ -10,11 +10,19 @@
         body { margin: 0; padding: 0; }  
         #chat-container { max-width: 600px; margin: 30px auto; }  
         #message-list { height: 35em; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; }  
-        .message { padding: 5px; border-bottom: 1px solid #eee; }  
+        .message { margin-bottom: 0.5em; padding: 0.7em; border-bottom: 1px solid #eee; border: solid 0.1em transparent; border-radius: 0.5em; }  
         .message:last-child { border-bottom: none; }
 
         .message-role { font-weight: bold; margin-right: 0.5em; }
-        .message-rol::after { content: ":"; font-weight: bold; }
+        .message-role::after { content: ":"; font-weight: bold; }
+
+        .message-you {
+            border-color: #ECF4FC;
+            background: #ECF4FC;
+        }
+        .message-ai {
+            box-shadow: 0 0 0.2em 0.1em rgba(150, 150, 150, 0.3);
+        }
     </style>  
 </head>  
 <body>
@@ -72,7 +80,11 @@
             function addMessage(sender, message) {  
                 const messageElement = $('<div class="message"></div>');
                 const formattedMessage = formatMessageForDisplay(message);
-                messageElement.html(`<span class="message-role">${sender}</span><span class="message-content">${formattedMessage}</span>`);  
+                
+                messageElement.addClass(`message-${sender.toLowerCase()}`);
+                messageElement.append(`<div class="message-role">${sender}</div>`);
+                messageElement.append(`<div class="message-content">${formattedMessage}</div>`);
+
                 messageList.append(messageElement);  
                 messageList.scrollTop(messageList[0].scrollHeight);  
             }
