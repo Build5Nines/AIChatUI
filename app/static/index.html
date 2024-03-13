@@ -29,6 +29,10 @@
         .message-citations ol {
             padding-left: 1.5em;
         }
+
+        .message-openai-usage {
+            font-size: 0.7em;
+        }
     </style>  
 </head>  
 <body>
@@ -110,9 +114,23 @@
                 // render additional data from chat completion
                 if (raw) {
                     renderCitations(raw, messageContentElement);
+                    renderAzureOpenAIUsageInfo(raw);
                 }
 
                 messageList.scrollTop(messageList[0].scrollHeight);  
+            }
+
+            function renderAzureOpenAIUsageInfo(raw) {
+                if (raw && raw.usage) {
+                    var usageElement = $('<div/>').addClass('message-openai-usage');
+                    var usageInfo = '<div>Azure OpenAI Service Token Usage - ';
+                    if (raw.usage.promptTokens) usageInfo += `<strong>Prompt:</strong> ${raw.usage.promptTokens.toLocaleString('en-US')}`;
+                    if (raw.usage.completionTokens) usageInfo += ` | <strong>Completion:</strong> ${raw.usage.completionTokens.toLocaleString('en-US')}`;
+                    if (raw.usage.totalTokens) usageInfo += ` | <strong>Total:</strong> ${raw.usage.totalTokens.toLocaleString('en-US')}`;
+                    usageInfo += '</div>';
+                    usageElement.append(usageInfo);
+                    messageList.append(usageElement);
+                }
             }
 
             function renderCitations(raw, messageContentElement) {
