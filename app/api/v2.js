@@ -75,6 +75,7 @@ module.exports = (app) => {
                 conversationHistory, // chat request messages array
                 { // getCompletionsOptions - https://learn.microsoft.com/javascript/api/%40azure/openai/getchatcompletionsoptions
                     azureExtensionOptions: { // https://learn.microsoft.com/javascript/api/%40azure/openai/azureextensionsoptions
+                        // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azurechatextensionconfiguration?view=azure-node-preview
                         extensions: [
                             // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration
                             {
