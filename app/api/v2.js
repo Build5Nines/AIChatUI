@@ -8,12 +8,6 @@ const azure_search_endpoint = process.env["AZURE_SEARCH_ENDPOINT"];
 const azure_search_key = process.env["AZURE_SEARCH_KEY"];
 const azure_search_index_name = process.env["AZURE_SEARCH_INDEX_NAME"];
 
-// https://learn.microsoft.com/javascript/api/%40azure/openai/openaiclient?view=azure-node-preview
-const chatClient = new OpenAIClient(
-    azure_openai_endpoint,
-    new AzureKeyCredential(azure_openai_api_key)
-    );
-
 // Store conversation history in memory for demonstration purposes.  
 // In a production environment, consider storing this data in a persistent store.  
 let conversationHistory = [];
@@ -62,6 +56,12 @@ module.exports = (app) => {
         conversationHistory.push({ role: "user", content: prompt });  
     
         try {  
+            // https://learn.microsoft.com/javascript/api/%40azure/openai/openaiclient?view=azure-node-preview
+            const chatClient = new OpenAIClient(
+                azure_openai_endpoint,
+                new AzureKeyCredential(azure_openai_api_key)
+                );
+
             // https://learn.microsoft.com/javascript/api/%40azure/openai/openaiclient
             const chatResponse = await chatClient.getChatCompletions(
                 azure_openai_deployment, // deployment name
