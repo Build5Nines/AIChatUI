@@ -72,6 +72,14 @@
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script>  
         $(document).ready(function() {  
+
+            // ###################################################
+
+            // Configure the API version to use 
+            const config_api_version = 'v1'; // "v2"
+
+            // ###################################################
+            
             const messageList = $('#message-list');  
             const messageForm = $('#message-form');  
             const messageInput = $('#message-input');  
@@ -87,7 +95,7 @@
             });
 
             $('#btnClearHistory').click(() => {
-                fetch('/v2/clear').then((res) => {
+                fetch(`/${config_api_version}/clear`).then((res) => {
                     if (res.ok){
                         $('#message-list').html('');
                         return;
@@ -171,7 +179,7 @@
             }
   
             function sendMessageToApi(message) {
-                fetch('/v2/chat', {
+                fetch(`/${config_api_version}/chat`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -193,7 +201,7 @@
 
 
             // load chat history
-            fetch('/v2/history', {
+            fetch(`/${config_api_version}/history`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
