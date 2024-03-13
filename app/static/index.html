@@ -22,6 +22,13 @@
         .message-ai {
             box-shadow: 0 0 0.2em 0.1em rgba(150, 150, 150, 0.3);
         }
+
+        .message-citations {
+            font-size: 0.7em;
+        }
+        .message-citations ol {
+            padding-left: 1.5em;
+        }
     </style>  
 </head>  
 <body>
@@ -88,16 +95,52 @@
                 
             });
   
-            function addMessage(sender, message) {  
+            function addMessage(sender, message, raw) {  
                 const messageElement = $('<div class="message"></div>');
                 const formattedMessage = formatMessageForDisplay(message);
                 
                 messageElement.addClass(`message-${sender.toLowerCase()}`);
                 messageElement.append(`<div class="message-role">${sender}</div>`);
-                messageElement.append(`<div class="message-content">${formattedMessage}</div>`);
 
-                messageList.append(messageElement);  
+                var messageContentElement = $(`<div class="message-content">${formattedMessage}</div>`);
+                messageElement.append(messageContentElement);
+
+                messageList.append(messageElement);
+
+                // render additional data from chat completion
+                if (raw) {
+                    renderCitations(raw, messageContentElement);
+                }
+
                 messageList.scrollTop(messageList[0].scrollHeight);  
+            }
+
+            function renderCitations(raw, messageContentElement) {
+                if (raw.choices && raw.choices.length > 0 && raw.choices[0].message && raw.choices[0].message.context && raw.choices[0].message.context.messages && raw.choices[0].message.context.messages.length > 0 && raw.choices[0].message.context.messages[0].role == 'tool') {
+                    var citations = JSON.parse(raw.choices[0].message.context.messages[0].content).citations;
+
+                    if (citations) {
+                        var citationsElement = $('<div/>').addClass('message-citations'),
+                            listElement = $('<ol></ol>');
+                        citationsElement.append('<div>citations:</div>');
+                        citationsElement.append(listElement);
+
+                        citations.forEach((item, index) => {
+                            listElement.append(
+                                $('<li></li>').append(
+                                    $("<a/>").attr('href', item.url).text(item.title).attr('target', '_blank')
+                                    )
+                                );
+
+                            var messageContentHtml = messageContentElement.html();
+                            
+                            messageContentHtml = messageContentHtml.replaceAll(`[doc${index + 1}]`, `<sup><a href="${item.url}" target="_blank">[${index + 1}]</a></sup>`);
+                            messageContentElement.html(messageContentHtml);
+                        });
+
+                        messageContentElement.append(citationsElement);
+                    }
+                }
             }
 
             function formatMessageForDisplay(message) {
@@ -121,7 +164,7 @@
                     }
                     throw new Error(`${response.status}: ${response.statusText}`);
                 }).then(res => {
-                    addMessage('AI', res.choices[0].message.content); 
+                    addMessage('AI', res.choices[0].message.content, res); 
                 }).catch(err => {
                     console.error(err);
                     addMessage('Error', 'Error occurred while sending message.');
@@ -150,7 +193,8 @@
                             if (role == 'assistant') role = 'AI';
                             addMessage(
                                 role,
-                                item.content
+                                item.content,
+                                item.raw
                             );
                         }
                     });
