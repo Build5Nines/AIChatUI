@@ -88,7 +88,7 @@ module.exports = (app) => {
     
             // Add the system's response to the conversation history  
             const systemResponse = chatResponse.choices[0].message.content;  
-            conversationHistory.push({ role: "assistant", content: systemResponse });  
+            conversationHistory.push({ role: "assistant", content: systemResponse, raw: chatResponse });  
     
             //return res.json({ response: systemResponse });
             return res.json(chatResponse);
