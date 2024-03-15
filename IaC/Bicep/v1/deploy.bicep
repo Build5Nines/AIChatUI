@@ -5,7 +5,7 @@ param location string = resourceGroup().location
 
 param azureOpenAISku string = 'S0'
 
-param openai_deployment_name string = 'b59-gpt35-turbo'
+param azureOpenAIDeploymentName string = 'b59-gpt-35-turbo'
 
 var resourceTags = {
   project: 'https://github.com/build5nines/AIChatUI'
@@ -30,7 +30,7 @@ resource azureopenai 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' =
 }
 
 resource azureopenaideployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
-  name: openai_deployment_name
+  name: azureOpenAIDeploymentName
   sku: {
     capacity: 120
     name: 'Standard'

@@ -5,6 +5,8 @@ param location string = resourceGroup().location
 
 param azureOpenAISku string = 'S0'
 
+param azureOpenAIDeploymentName string = 'b59-gpt4'
+
 param azureSearchSku string = 'standard'
 
 param azureStorageSku string = 'Standard_LRS'
@@ -94,4 +96,25 @@ resource storageblobservice 'Microsoft.Storage/storageAccounts/blobServices@2023
 resource storagecontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
   name: azureStorageBlobContainerName
   parent: storageblobservice
+}
+
+resource azureopenaideployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
+  name: azureOpenAIDeploymentName
+  sku: {
+    capacity: 10
+    name: 'Standard'
+  }
+  parent: azureopenai
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4'
+      version: '1106-Preview'
+    }
+    raiPolicyName: 'Microsoft.Default'
+    versionUpgradeOption: 'OnceCurrentVersionExpired'
+    scaleSettings: {
+      capacity: 10
+    }
+  }
 }

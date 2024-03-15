@@ -26,7 +26,7 @@ locals {
     
     openai_sku                = "S0"
 
-    openai_deployment_name    = "b59-gpt35-turbo"
+    openai_deployment_name    = "b59-gpt-35-turbo"
 
     resourceTags = {
         project = "https://github.com/build5nines/AIChatUI"

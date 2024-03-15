@@ -5,12 +5,20 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~>3"
     }
+    azapi = {
+      source = "azure/azapi"
+    }
   }
 }
 
 provider "azurerm" {
   features {}
 }
+
+provider "azapi" {
+
+}
+
 
 locals {
     resource_prefix           = "b59-eus2-aichatui"
@@ -19,6 +27,8 @@ locals {
     openai_sku                      = "S0"
 
     azure_search_sku                = "standard"
+
+    openai_deployment_name          = "b59-gpt4"
 
     azure_storage_sku               = "Standard"
     azure_storage_replication_type  = "LRS"
@@ -66,4 +76,25 @@ resource azurerm_storage_account azurestorage {
 resource azurerm_storage_container azurestoragecontainer {
   name                  = local.azure_storage_blob_container_name
   storage_account_name  = azurerm_storage_account.azurestorage.name
+}
+
+resource "azapi_resource" azureopenaideployment {
+  type = "Microsoft.CognitiveServices/accounts/deployments@2023-05-01"
+  name = local.openai_deployment_name
+  parent_id = azurerm_cognitive_account.azureopenai.id
+  body = jsonencode({
+    properties = {
+      model = {
+        format = "OpenAI"
+        name = "gpt-4"
+        version = "1106-Preview"
+      }
+      versionUpgradeOption = "OnceCurrentVersionExpired"
+      raiPolicyName = "Microsoft.Default"
+    }
+    sku = {
+      capacity = 10
+      name = "Standard"
+    }
+  })
 }
