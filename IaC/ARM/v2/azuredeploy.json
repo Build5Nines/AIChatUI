@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.25.53.49325",
-      "templateHash": "4492116795544301451"
+      "version": "0.26.54.24096",
+      "templateHash": "12500992424623783544"
     }
   },
   "parameters": {
@@ -28,6 +28,10 @@
     "azureStorageSku": {
       "type": "string",
       "defaultValue": "Standard_LRS"
+    },
+    "azureStorageBlobContainerName": {
+      "type": "string",
+      "defaultValue": "docs"
     }
   },
   "variables": {
@@ -107,6 +111,22 @@
         "supportsHttpsTrafficOnly": true,
         "accessTier": "Hot"
       }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2023-01-01",
+      "name": "[format('{0}/{1}', format('{0}sa', variables('resourcePrefix_for_storage')), 'default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', format('{0}sa', variables('resourcePrefix_for_storage')))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2023-01-01",
+      "name": "[format('{0}/{1}/{2}', format('{0}sa', variables('resourcePrefix_for_storage')), 'default', parameters('azureStorageBlobContainerName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', format('{0}sa', variables('resourcePrefix_for_storage')), 'default')]"
+      ]
     }
   ]
 }
