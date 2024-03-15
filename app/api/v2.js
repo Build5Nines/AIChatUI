@@ -102,7 +102,8 @@ module.exports = (app) => {
             return res.json(chatResponse);
         } catch (error) {  
             console.error(error);  
-            return res.status(500).send('Error processing your request');  
+            // return res.status(500).send('Error processing your request'); 
+            return res.status(500).json(error); 
         }  
     });
 

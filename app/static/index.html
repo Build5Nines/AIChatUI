@@ -22,6 +22,11 @@
         .message-ai {
             box-shadow: 0 0 0.2em 0.1em rgba(150, 150, 150, 0.3);
         }
+        .message-error {
+            background-color: #F9D7DB;
+            color: #58141C;
+            /* box-shadow: 0 0 0.2em 0.1em rgb(167, 65, 65); */
+        }
 
         .message-citations {
             font-size: 0.7em;
@@ -76,7 +81,7 @@
             // ###################################################
 
             // Configure the API version to use 
-            const config_api_version = 'v1'; // "v2"
+            const config_api_version = 'v2'; // "v1"
 
             // ###################################################
             
@@ -146,7 +151,7 @@
                 if (raw.choices && raw.choices.length > 0 && raw.choices[0].message && raw.choices[0].message.context && raw.choices[0].message.context.messages && raw.choices[0].message.context.messages.length > 0 && raw.choices[0].message.context.messages[0].role == 'tool') {
                     var citations = JSON.parse(raw.choices[0].message.context.messages[0].content).citations;
 
-                    if (citations) {
+                    if (citations && citations.length > 0) {
                         var citationsElement = $('<div/>').addClass('message-citations'),
                             listElement = $('<ol></ol>');
                         citationsElement.append('<div>citations:</div>');
@@ -186,12 +191,15 @@
                     },
                     body: JSON.stringify({ prompt: message })
                 }).then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    throw new Error(`${response.status}: ${response.statusText}`);
+                    return res.json();
                 }).then(res => {
-                    addMessage('AI', res.choices[0].message.content, res); 
+                    if (res.choices) {
+                        // AI response returned
+                        addMessage('AI', res.choices[0].message.content, res);
+                    } else {
+                        // error response returned
+                        addMessage('Error', `${res.code}: ${res.message}`);
+                    }
                 }).catch(err => {
                     console.error(err);
                     addMessage('Error', 'Error occurred while sending message.');
