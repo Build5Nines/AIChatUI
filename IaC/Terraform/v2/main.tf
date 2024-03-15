@@ -64,6 +64,6 @@ resource azurerm_storage_account azurestorage {
   tags                      = local.resourceTags
 }
 resource azurerm_storage_container azurestoragecontainer {
-  name                  = azure_storage_blob_container_name
+  name                  = local.azure_storage_blob_container_name
   storage_account_name  = azurerm_storage_account.azurestorage.name
 }
