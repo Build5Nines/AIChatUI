@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "5490280294630692804"
+      "templateHash": "9271810267610488185"
     }
   },
   "parameters": {
@@ -21,9 +21,9 @@
       "type": "string",
       "defaultValue": "S0"
     },
-    "openai_deployment_name": {
+    "azureOpenAIDeploymentName": {
       "type": "string",
-      "defaultValue": "b59-gpt35-turbo"
+      "defaultValue": "b59-gpt-35-turbo"
     }
   },
   "variables": {
@@ -54,7 +54,7 @@
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2023-05-01",
-      "name": "[format('{0}/{1}', format('{0}-oai', parameters('resourcePrefix')), parameters('openai_deployment_name'))]",
+      "name": "[format('{0}/{1}', format('{0}-oai', parameters('resourcePrefix')), parameters('azureOpenAIDeploymentName'))]",
       "sku": {
         "capacity": 120,
         "name": "Standard"
