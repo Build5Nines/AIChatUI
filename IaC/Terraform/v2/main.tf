@@ -23,6 +23,8 @@ locals {
     azure_storage_sku               = "Standard"
     azure_storage_replication_type  = "LRS"
 
+    azure_storage_blob_container_name = "docs"
+
     resourceTags = {
         project = "https://github.com/build5nines/AIChatUI"
     }
@@ -60,4 +62,8 @@ resource azurerm_storage_account azurestorage {
   account_replication_type  = local.azure_storage_replication_type
   enable_https_traffic_only = true
   tags                      = local.resourceTags
+}
+resource azurerm_storage_container azurestoragecontainer {
+  name                  = azure_storage_blob_container_name
+  storage_account_name  = azurerm_storage_account.azurestorage.name
 }

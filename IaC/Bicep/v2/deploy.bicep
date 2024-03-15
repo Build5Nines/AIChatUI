@@ -9,6 +9,7 @@ param azureSearchSku string = 'standard'
 
 param azureStorageSku string = 'Standard_LRS'
 
+param azureStorageBlobContainerName string = 'docs'
 
 var resourceTags = {
   project: 'https://github.com/build5nines/AIChatUI'
@@ -83,4 +84,14 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     supportsHttpsTrafficOnly: true
     accessTier: 'Hot'
   }
+}
+
+resource storageblobservice 'Microsoft.Storage/storageAccounts/blobServices@2023-01-01' = {
+  parent: storage
+  name: 'default'
+}
+
+resource storagecontainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2023-01-01' = {
+  name: azureStorageBlobContainerName
+  parent: storageblobservice
 }
