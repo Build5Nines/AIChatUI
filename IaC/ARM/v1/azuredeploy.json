@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "16834692971558596919"
+      "templateHash": "5490280294630692804"
     }
   },
   "parameters": {
@@ -20,6 +20,10 @@
     "azureOpenAISku": {
       "type": "string",
       "defaultValue": "S0"
+    },
+    "openai_deployment_name": {
+      "type": "string",
+      "defaultValue": "b59-gpt35-turbo"
     }
   },
   "variables": {
@@ -46,6 +50,30 @@
         },
         "publicNetworkAccess": "Enabled"
       }
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2023-05-01",
+      "name": "[format('{0}/{1}', format('{0}-oai', parameters('resourcePrefix')), parameters('openai_deployment_name'))]",
+      "sku": {
+        "capacity": 120,
+        "name": "Standard"
+      },
+      "properties": {
+        "model": {
+          "format": "OpenAI",
+          "name": "gpt-35-turbo",
+          "version": "0613"
+        },
+        "raiPolicyName": "Microsoft.Default",
+        "versionUpgradeOption": "OnceCurrentVersionExpired",
+        "scaleSettings": {
+          "capacity": 120
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', format('{0}-oai', parameters('resourcePrefix')))]"
+      ]
     }
   ]
 }
