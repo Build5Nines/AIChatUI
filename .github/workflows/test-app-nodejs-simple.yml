@@ -1,12 +1,12 @@
-name: Test App - Node.js
+name: Test App - Node.js - Simple
 
 on:
   push:
     paths:
-      - 'app/**'
+      - 'app/nodejs/simple/**'
   pull_request:
     paths:
-      - 'app/**'
+      - 'app/nodejs/simple/**'
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: 'app'
+        working-directory: 'app/nodejs/simple'
     
     steps:
     - name: Checkout
