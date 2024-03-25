@@ -94,7 +94,7 @@
                 e.preventDefault();  
                 const message = messageInput.val().trim();  
                 if (message) {  
-                    addMessage('You', message);  
+                    addMessage('You', formatMessageForDisplay(message));  
                     messageInput.val('');  
                     sendMessageToApi(message);  
                 }  
