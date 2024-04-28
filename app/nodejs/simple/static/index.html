@@ -135,6 +135,24 @@
                 messageList.scrollTop(messageList[0].scrollHeight);  
             }
 
+            function addAIThinkingMessage() {  
+                const messageElement = $('<div class="message message-thinking"></div>');
+                
+                messageElement.addClass(`message-ai}`);
+                messageElement.append(`<div class="message-role">AI</div>`);
+
+                var messageContentElement = $(`<div class="message-content">Thinking...</div>`);
+                messageElement.append(messageContentElement);
+
+                messageList.append(messageElement);
+
+                messageList.scrollTop(messageList[0].scrollHeight);  
+            }
+
+            function removeAIThinkingMessage() {
+                $('div.message-thinking').remove();
+            }
+
             function renderAzureOpenAIUsageInfo(raw) {
                 if (raw && raw.usage) {
                     var usageElement = $('<div/>').addClass('message-openai-usage');
@@ -185,6 +203,7 @@
             }
   
             function sendMessageToApi(message) {
+                addAIThinkingMessage();
                 fetch(`/${config_api_version}/chat`, {
                     method: 'POST',
                     headers: {
@@ -201,6 +220,8 @@
                         // error response returned
                         addMessage('Error', `${res.code}: ${res.message}`);
                     }
+                }).finally(() => {
+                    removeAIThinkingMessage();
                 }).catch(err => {
                     console.error(err);
                     addMessage('Error', 'Error occurred while sending message.');
