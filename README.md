@@ -2,6 +2,8 @@
 
 AIChatUI is a simple chat UI with backend API for making chat completion called against Azure OpenAI Service. The API is written in Javascript using Node.js with Swagger UI support, and a static `Index.html` client for the front-end Chat UI.
 
+> **Like this sample app?** - You can read more about AI / ML, as well as related Microsoft Azure and DevOps topics over at [https://build5nines.com](https://build5nines.com)
+
 ## User Interface
 
 The frontend application is written as a static HTML page ([`/static/index.html`](static/index.html)) using Bootstrap and jQuery. Just a simple UI for now.
