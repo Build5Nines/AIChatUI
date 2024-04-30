@@ -57,7 +57,9 @@ module.exports = (app) => {
         const prompt = req.body.prompt;  
         if (!prompt) {  
             return res.status(400).send('Prompt is required');  
-        }  
+        }
+
+        console.info(`\n\nUser Prompt:\n${prompt}`);
     
         // Add the user's prompt to the conversation history
         appendConversationHistory("user", prompt);
@@ -98,6 +100,8 @@ module.exports = (app) => {
             const systemResponse = chatResponse.choices[0].message.content;  
             appendConversationHistory("assistant", systemResponse, chatResponse); 
     
+            console.info(`\n\nAI Response:\n${systemResponse}`);
+
             //return res.json({ response: systemResponse });
             return res.json(chatResponse);
         } catch (error) {  
