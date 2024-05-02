@@ -76,21 +76,27 @@ module.exports = (app) => {
                 azure_openai_deployment, // deployment name
                 conversationHistory, // chat request messages array
                 { // getCompletionsOptions - https://learn.microsoft.com/javascript/api/%40azure/openai/getchatcompletionsoptions
-                    azureExtensionOptions: { // https://learn.microsoft.com/javascript/api/%40azure/openai/azureextensionsoptions
+                    azureExtensionOptions: { //https://learn.microsoft.com/javascript/api/%40azure/openai/getchatcompletionsoptions?view=azure-node-preview#@azure-openai-getchatcompletionsoptions-azureextensionoptions
                         // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azurechatextensionconfiguration?view=azure-node-preview
                         extensions: [
-                            // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration
+                            // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azureextensionsoptions?view=azure-node-preview#@azure-openai-azureextensionsoptions-extensions
                             {
-                                type: 'AzureCognitiveSearch',
+                                type: 'AzureCognitiveSearch', 
                                 endpoint: azure_search_endpoint,
                                 indexName: azure_search_index_name,
                                 key: azure_search_key,
                                 queryType: 'simple', // https://learn.microsoft.com/javascript/api/%40azure/openai/azurecognitivesearchquerytype
-                                strictness: 3, // https://learn.microsoft.com/avascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-strictness
+                                strictness: 3, // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-strictness
                                 topNDocuments: 5, // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-topndocuments
                                 roleInformation: // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-roleinformation
                                     "You are an AI assistant that helps people find information.",
                             }
+                            // Other available options: azure_cosmos_db, AzureMachineLearning, Pinecone, Elasticsearch
+                            // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/azure-machine-learning.md
+                            // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/pinecone.md
+                            // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/elasticsearch.md
+                            // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/cosmos-db.md
+
                         ]
                     }
                 }
