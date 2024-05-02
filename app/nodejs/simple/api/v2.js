@@ -80,14 +80,26 @@ module.exports = (app) => {
                         // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azurechatextensionconfiguration?view=azure-node-preview
                         extensions: [
                             // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azureextensionsoptions?view=azure-node-preview#@azure-openai-azureextensionsoptions-extensions
+                            // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/azure-search.md
                             {
                                 type: 'AzureCognitiveSearch', 
                                 endpoint: azure_search_endpoint,
                                 indexName: azure_search_index_name,
                                 key: azure_search_key,
-                                queryType: 'simple', // https://learn.microsoft.com/javascript/api/%40azure/openai/azurecognitivesearchquerytype
-                                strictness: 3, // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-strictness
+
+                                // Whether queries should be restricted to use of indexed data. Default is True.
+                                in_scope: false,
+
+                                // The query type to use with Azure Search. Default is simple
+                                queryType: 'simple', // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/azure-search.md#query-type
+
+                                // The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer. Default is 3.
+                                strictness: 2, // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-strictness
+                                
+                                // The configured top number of documents to feature for the configured query. Default is 5.
                                 topNDocuments: 5, // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-topndocuments
+
+                                // Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses.
                                 roleInformation: // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-roleinformation
                                     "You are an AI assistant that helps people find information.",
                             }
