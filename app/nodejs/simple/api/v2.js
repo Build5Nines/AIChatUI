@@ -101,7 +101,8 @@ module.exports = (app) => {
 
                                 // Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses.
                                 roleInformation: // https://learn.microsoft.com/javascript/api/@azure/openai/azurecognitivesearchchatextensionconfiguration?view=azure-node-preview#@azure-openai-azurecognitivesearchchatextensionconfiguration-roleinformation
-                                    "You are an AI assistant that helps people find information.",
+                                    //"You are an AI assistant that helps people find information.",
+                                    "You are an expert Site Reliability Engineer (SRE) and DevOps Engineer that helps people find information."
                             }
                             // Other available options: azure_cosmos_db, AzureMachineLearning, Pinecone, Elasticsearch
                             // https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/ai-services/openai/references/azure-machine-learning.md
