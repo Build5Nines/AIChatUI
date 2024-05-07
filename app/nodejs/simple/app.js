@@ -18,9 +18,12 @@ app.use(express.static('static'))
 *   description: Call Azure OpenAI service to make Chat Completions.
 * - name: v2
 *   description: Call Azure OpenAI service to make Chat Completions, also integrating Azure Search for additional data.
+* - name: v3
+*   description: Call Azure OpenAI service to make Chat Completions, also integrating Azure Search for additional data, and a custom function for reading URL content from the web.
 */
 require('./api/v1.js')(app)
 require('./api/v2.js')(app)
+require('./api/v3.js')(app)
 
 
 // Add support for Swagger UI
