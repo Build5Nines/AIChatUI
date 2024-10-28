@@ -41,4 +41,4 @@ The project includes the following Infrastructure as Code (IaC) templates that c
   - [`/IaC/ARM/v1`](IaC/ARM/v1) - Deploys Azure OpenAI Service
   - [`/IaC/ARM/v2`](IaC/ARM/v2) - Deploys Azure OpenAI Service, Azure Search Service, and Azure Storage Account
 
-This project is written by [Chris Pietschmann](https://www.linkedin.com/in/crpietschmann/) _(Microsoft MVP)_.
+This project was created by [Chris Pietschmann](https://www.pietschsoft.com) _(Microsoft MVP, HashiCorp Ambassador)_.
