@@ -90,7 +90,6 @@ module.exports = (app) => {
 
                     // https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#chat-completions
                     // https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling?tabs=python
-                    // ERROR: 'Functions are not supported for this API version or this model version. To learn how to user use function calling with Azure OpenAI Service. Please refer to this wiki  https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling?tabs=python'
                     tools: await functionProvider.getFunctionDefinition(),
                     // [
                     //     {
@@ -109,54 +108,9 @@ module.exports = (app) => {
                     //             },
                     //             required: ["url"]
                     //         }
-                    //     },
-                    //     {
-                    //         type: "function",
-                    //         function: {
-                    //             name: "searchGoogle",
-                    //             description: "Search Google for information",
-                    //             parameters: {
-                    //                 type: "object",
-                    //                 properties: {
-                    //                     query: {
-                    //                         type: "string",
-                    //                         description: "The search query to use, e.g. Azure Functions"
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
                     //     }
                     // ],
                     tool_choice: "auto", // this is the default behavior when tools are specified anyway
-
-                    /*
-                    functions: [
-                        // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/functiondefinition?view=azure-node-preview
-                        {
-                            name: "downloadHtmlToMarkdown",
-                            description: "Get the contents of a web page URL",
-                            parameters: {
-                                "url": {
-                                    type: "string",
-                                    description: "The web page URL of the page to read, e.g. https://build5nines.com/category/page"
-                                }
-                            }
-                            *
-                            parameters: [
-                                {
-                                    type: "object",
-                                    properties: {
-                                        url: {
-                                            type: "string",
-                                            description: "The web page URL of the page to read, e.g. https://build5nines.com/category/page"
-                                        }
-                                    }
-                                }
-                            ]
-                            *
-                        }
-                    ],
-                    */
 
                     azureExtensionOptions: { //https://learn.microsoft.com/javascript/api/%40azure/openai/getchatcompletionsoptions?view=azure-node-preview#@azure-openai-getchatcompletionsoptions-azureextensionoptions
                         // https://learn.microsoft.com/en-us/javascript/api/%40azure/openai/azurechatextensionconfiguration?view=azure-node-preview
