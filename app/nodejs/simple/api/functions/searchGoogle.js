@@ -4,6 +4,8 @@ async function searchGoogle(query) {
     try {
         const url = `https://www.google.com/search?q=${query}`;
 
+        console.log('searchGoogle:', query);
+
         let markdown = await downloadHtmlToMarkdown(url);
 
         var maxLength = 15 * 1024;
@@ -11,7 +13,7 @@ async function searchGoogle(query) {
             markdown = markdown.substring(0, maxLength);
         }
         
-        console.log('searchGoogle Results:', markdown);
+        // console.log('searchGoogle Results:', markdown);
 
         return markdown;
     } catch (error) {

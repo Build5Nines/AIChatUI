@@ -10,8 +10,7 @@ const azure_search_index_name = process.env["AZURE_SEARCH_INDEX_NAME"];
 
 
 // Import Functions Used
-const downloadHtmlToMarkdown = require('./functions/downloadHtmlToMarkdown');
-const searchGoogle = require('./functions/searchGoogle');
+const functionProvider = require('./functions/functionProvider');
 
 // Store conversation history in memory for demonstration purposes.  
 // In a production environment, consider storing this data in a persistent store.  
@@ -92,41 +91,42 @@ module.exports = (app) => {
                     // https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#chat-completions
                     // https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling?tabs=python
                     // ERROR: 'Functions are not supported for this API version or this model version. To learn how to user use function calling with Azure OpenAI Service. Please refer to this wiki  https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/function-calling?tabs=python'
-                    tools: [
-                        {
-                            type: "function",
-                            function: {
-                                name: "downloadHtmlToMarkdown",
-                                description: "Download the contents of a web page URL",
-                                parameters: {
-                                    type: "object",
-                                    properties: {
-                                        url: {
-                                            type: "string",
-                                            description: "The web page URL of the page to download, e.g. https://build5nines.com/category/page"
-                                        }
-                                    }
-                                },
-                                required: ["url"]
-                            }
-                        },
-                        {
-                            type: "function",
-                            function: {
-                                name: "searchGoogle",
-                                description: "Search Google for information",
-                                parameters: {
-                                    type: "object",
-                                    properties: {
-                                        query: {
-                                            type: "string",
-                                            description: "The search query to use, e.g. Azure Functions"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
+                    tools: await functionProvider.getFunctionDefinition(),
+                    // [
+                    //     {
+                    //         type: "function",
+                    //         function: {
+                    //             name: "downloadHtmlToMarkdown",
+                    //             description: "Download the contents of a web page URL",
+                    //             parameters: {
+                    //                 type: "object",
+                    //                 properties: {
+                    //                     url: {
+                    //                         type: "string",
+                    //                         description: "The web page URL of the page to download, e.g. https://build5nines.com/category/page"
+                    //                     }
+                    //                 }
+                    //             },
+                    //             required: ["url"]
+                    //         }
+                    //     },
+                    //     {
+                    //         type: "function",
+                    //         function: {
+                    //             name: "searchGoogle",
+                    //             description: "Search Google for information",
+                    //             parameters: {
+                    //                 type: "object",
+                    //                 properties: {
+                    //                     query: {
+                    //                         type: "string",
+                    //                         description: "The search query to use, e.g. Azure Functions"
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    // ],
                     tool_choice: "auto", // this is the default behavior when tools are specified anyway
 
                     /*
@@ -211,26 +211,10 @@ module.exports = (app) => {
                     // Check if the tool call is for the downloadHtmlToMarkdown function
                     console.log('toolCall:', toolCall);
                     
-                    let functionResult = null;
-
-                    switch (toolCall.function.name) {
-                        case "downloadHtmlToMarkdown":
-                            const { url } = JSON.parse(toolCall.function.arguments);
-                    
-                            // Call the downloadHtmlToMarkdown function and get the result
-                            functionResult = await downloadHtmlToMarkdown(url);
-                            break;
-                    
-                        case "searchGoogle":
-                            const { query } = JSON.parse(toolCall.function.arguments);
-                    
-                            // Call the searchGoogle function and get the result
-                            functionResult = await searchGoogle(query);
-                            break;
-                    
-                        default:
-                            console.error("Unsupported Function Call:", JSON.stringify(toolCall));
-                    }
+                    let functionResult = await functionProvider.executeFunction(
+                        toolCall.function.name,
+                        toolCall.function.arguments
+                    );
 
                     // Add the function response to the conversation history
                     conversationHistoryWithFunctionResults.push(

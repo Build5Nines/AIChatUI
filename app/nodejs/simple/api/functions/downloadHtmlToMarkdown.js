@@ -27,7 +27,7 @@ async function downloadHtmlToMarkdown(url) {
         // Convert HTML to Markdown
         const markdown = turndownService.turndown($.html());
 
-        console.log('downloadHtmlToMarkdown Results:', markdown);
+        // console.log('downloadHtmlToMarkdown Results:', markdown);
 
         return markdown;
     } catch (error) {
