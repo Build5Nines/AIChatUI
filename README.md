@@ -10,12 +10,24 @@ The frontend application is written as a static HTML page ([`/static/index.html`
 
 ![AIChatUI user interface](docs/images/aichatui-frontend.jpg)
 
+The UI supports the following features:
+
+- Renders the markdown responses from the AI to HTML for display in the UI
+- Renders links when citations / references are returned in the AI response
+- Displays Azure OpenAI Service usage data / stats for chat completions at the bottom of the AI response
+- Copy button to copy the contents of the AI response to the clipboard for easier copy/paste
+- 'Clear Chat History' at the bottom to clear the chat history and start a new chat session
+
 ## API Functionality
 
 The API versions are as follows:
 
 - v1 - Makes chat completions against Azure OpenAI Service.
-- v2 - Makes chat completions against Azure OpenAI Service with the integration of Azure Search Service too.
+- v2 - Makes chat completions against Azure OpenAI Service with the integration of Azure AI Search to index your own data.
+- v3 - Makes chat completions against Azure OpenAI Service, with support for the following:
+  - Integration of Azure AI Search to index your own data
+  - Include a function to support agent download of web pages
+  - Include a function to support agent download of Google Search results
 
 The app integrates Swagger to provide a documentation UI that can be used to see the API endpoints supported, as well as the ability to test them. The Swagger UI is located at `http://localhost:8080/docs` when running the application.
 
