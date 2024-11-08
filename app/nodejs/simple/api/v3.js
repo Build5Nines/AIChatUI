@@ -11,7 +11,7 @@ const azure_search_index_name = process.env["AZURE_SEARCH_INDEX_NAME"];
 
 // Import Functions Used
 const downloadHtmlToMarkdown = require('./functions/downloadHtmlToMarkdown');
-
+const searchGoogle = require('./functions/searchGoogle');
 
 // Store conversation history in memory for demonstration purposes.  
 // In a production environment, consider storing this data in a persistent store.  
@@ -97,17 +97,33 @@ module.exports = (app) => {
                             type: "function",
                             function: {
                                 name: "downloadHtmlToMarkdown",
-                                description: "Get the contents of a web page URL",
+                                description: "Download the contents of a web page URL",
                                 parameters: {
                                     type: "object",
                                     properties: {
                                         url: {
                                             type: "string",
-                                            description: "The web page URL of the page to read, e.g. https://build5nines.com/category/page"
+                                            description: "The web page URL of the page to download, e.g. https://build5nines.com/category/page"
                                         }
                                     }
                                 },
                                 required: ["url"]
+                            }
+                        },
+                        {
+                            type: "function",
+                            function: {
+                                name: "searchGoogle",
+                                description: "Search Google for information",
+                                parameters: {
+                                    type: "object",
+                                    properties: {
+                                        query: {
+                                            type: "string",
+                                            description: "The search query to use, e.g. Azure Functions"
+                                        }
+                                    }
+                                }
                             }
                         }
                     ],
@@ -179,18 +195,82 @@ module.exports = (app) => {
                         ]
                     }
                 }
-                );  
+            );  
     
-            // Add the system's response to the conversation history  
-            const systemResponse = chatResponse.choices[0].message.content;  
-            appendConversationHistory("assistant", systemResponse, chatResponse); 
+            const message = chatResponse.choices[0].message;
 
             console.info(`\n\ntoolCalls:\n${JSON.stringify(chatResponse.choices[0].message.toolCalls)}`);
-    
-            console.info(`\n\nAI Response:\n${systemResponse}`);
 
-            //return res.json({ response: systemResponse });
-            return res.json(chatResponse);
+            // Check if tool calls are present
+            if (message.toolCalls && message.toolCalls.length > 0) {
+
+                const conversationHistoryWithFunctionResults = [...conversationHistory];
+
+                for(var toolCallIndex in message.toolCalls) {
+                    const toolCall = message.toolCalls[toolCallIndex];
+                    // Check if the tool call is for the downloadHtmlToMarkdown function
+                    console.log('toolCall:', toolCall);
+                    
+                    let functionResult = null;
+
+                    switch (toolCall.function.name) {
+                        case "downloadHtmlToMarkdown":
+                            const { url } = JSON.parse(toolCall.function.arguments);
+                    
+                            // Call the downloadHtmlToMarkdown function and get the result
+                            functionResult = await downloadHtmlToMarkdown(url);
+                            break;
+                    
+                        case "searchGoogle":
+                            const { query } = JSON.parse(toolCall.function.arguments);
+                    
+                            // Call the searchGoogle function and get the result
+                            functionResult = await searchGoogle(query);
+                            break;
+                    
+                        default:
+                            console.error("Unsupported Function Call:", JSON.stringify(toolCall));
+                    }
+
+                    // Add the function response to the conversation history
+                    conversationHistoryWithFunctionResults.push(
+                        {
+                            role: "function",
+                            name: toolCall.function.name,
+                            content: JSON.stringify(functionResult)
+                        }
+                    );
+                }                
+
+                try {
+                    // Add the function response to the conversation history
+                    //appendConversationHistory("function", JSON.stringify(functionResult), chatResponse);
+
+                    // Re-call the chat completion API with the function's response added to the conversation history
+                    const finalResponse = await chatClient.getChatCompletions(
+                        azure_openai_deployment,
+                        conversationHistoryWithFunctionResults
+                    );
+
+                    const systemResponse = finalResponse.choices[0].message.content;
+                    appendConversationHistory("assistant", systemResponse, finalResponse);
+
+                    console.info(`AI Response after function call:\n${systemResponse}`);
+                    return res.json(finalResponse);
+                } catch (functionError) {
+                    console.error("Error executing downloadHtmlToMarkdown:", functionError);
+                    return res.status(500).json({ error: "Failed to execute function" });
+                }
+
+            } else {
+                // If no tool call, use the response directly
+                const systemResponse = message.content;
+                appendConversationHistory("assistant", systemResponse, chatResponse);
+
+                console.info(`AI Response:\n${systemResponse}`);
+                return res.json(chatResponse);
+            }
+            
         } catch (error) {  
             console.error(error);  
             // return res.status(500).send('Error processing your request'); 
