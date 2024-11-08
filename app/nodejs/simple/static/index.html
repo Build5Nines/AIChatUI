@@ -8,17 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <style>  
         body { margin: 0; padding: 0; }  
-        #chat-container { max-width: 600px; margin: 30px auto; }  
-        #message-list { height: 35em; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 0.5em; }  
+        #chat-container { max-width: 95%; margin: 30px auto; }  
+        #message-list { height: 35em; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 0.5em; border-radius: 0.5em; }  
         .message { margin-bottom: 0.5em; padding: 0.7em; border-bottom: 1px solid #eee; border: solid 0.1em transparent; border-radius: 0.5em; }  
         .message:last-child { border-bottom: none; }
+
+        #message-input { height: 8em; }
+        #btnClearHistory { font-size: 0.8em;}
 
         .message-role { font-weight: bold; margin-right: 0.5em; }
         .message-role::after { content: ":"; font-weight: bold; }
 
         .message-you {
-            border-color: #ECF4FC;
-            background: #ECF4FC;
+            border: none;
+            background: linear-gradient(to bottom right, #ECF4FC, #F8F1FD);
         }
         .message-ai {
             box-shadow: 0 0 0.2em 0.1em rgba(150, 150, 150, 0.3);
@@ -39,6 +42,7 @@
         .message-openai-usage {
             font-size: 0.7em;
             padding-bottom: 0.5em;
+            border-top: 0.1em solid #efefef;
         }
     </style>  
 </head>  
@@ -140,7 +144,7 @@
                 // render additional data from chat completion
                 if (raw) {
                     renderCitations(raw, messageContentElement);
-                    renderAzureOpenAIUsageInfo(raw);
+                    renderAzureOpenAIUsageInfo(raw).appendTo(messageElement);
                 }
 
                 messageList.scrollTop(messageList[0].scrollHeight);  
@@ -173,7 +177,7 @@
                     if (raw.usage.totalTokens) usageInfo += ` | <strong>Total:</strong> ${raw.usage.totalTokens.toLocaleString('en-US')}`;
                     usageInfo += '</div>';
                     usageElement.append(usageInfo);
-                    messageList.append(usageElement);
+                    return usageElement;
                 }
             }
 
