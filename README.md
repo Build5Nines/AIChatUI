@@ -8,7 +8,7 @@ AIChatUI is a simple chat UI with backend API for making chat completion called 
 
 The frontend application is written as a static HTML page ([`/static/index.html`](static/index.html)) using Bootstrap and jQuery. Just a simple UI for now.
 
-![AIChatUI user interface](docs/images/aichatui-frontend.png)
+![AIChatUI user interface](docs/images/aichatui-frontend.jpg)
 
 ## API Functionality
 
