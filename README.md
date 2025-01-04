@@ -18,6 +18,8 @@ The UI supports the following features:
 - Copy button to copy the contents of the AI response to the clipboard for easier copy/paste
 - 'Clear Chat History' at the bottom to clear the chat history and start a new chat session
 
+[![Unlock your potential: Master Cloud, AI and DevOps Skills Today with the Build5Nines Membership!](https://members.build5nines.com/wp-content/uploads/2024/12/Build5Nines-Membership-20241216-750x172-1.jpg)](https://members.build5nines.com)
+
 ## API Functionality
 
 The API versions are as follows:
